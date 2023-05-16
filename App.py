@@ -19,7 +19,7 @@ client = pymongo.MongoClient(
 )
 db = client[MONGO_DATABASE]
 
-uiEndPoint = 'http://localhost:5000/'
+uiEndPoint = 'https://cutit-server.onrender.com/'
 
 
 @app.route("/<hash>", methods=["GET"])
