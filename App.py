@@ -6,12 +6,13 @@ import random
 import string
 import re
 regex = re.compile(
-        # r'^(?:http|ftp)s?://' # http:// or https://
-        r'(?:(?:[A-Z0-9](?:[A-Z0-9-]{0,61}[A-Z0-9])?\.)+(?:[A-Z]{2,6}\.?|[A-Z0-9-]{2,}\.?)|' #domain...
-        r'localhost|' #localhost...
-        r'\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})' # ...or ip
-        r'(?::\d+)?' # optional port
-        r'(?:/?|[/?]\S+)$', re.IGNORECASE)
+    r'(^(?:http|ftp)s?://)|.*'  # http:// or https://
+    # domain...
+    r'(?:(?:[A-Z0-9](?:[A-Z0-9-]{0,61}[A-Z0-9])?\.)+(?:[A-Z]{2,6}\.?|[A-Z0-9-]{2,}\.?)|'
+    r'localhost|'  # localhost...
+    r'\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})'  # ...or ip
+    r'(?::\d+)?'  # optional port
+    r'(?:/?|[/?]\S+)$', re.IGNORECASE)
 client = pymongo.MongoClient(
     MONGO_URI,
     connect=False,
@@ -48,6 +49,7 @@ def geturl(hash):
 
 # write a function to generate a random alphanumeric string of length 6 using python3
 
+
 def hash_generator():
     return ''.join(random.choice(string.ascii_letters + string.digits) for _ in range(6))
 
@@ -55,7 +57,7 @@ def hash_generator():
 @app.route("/", methods=["POST"])
 def get_hash():
     try:
-        jsonRequest =request.get_json(force=True)
+        jsonRequest = request.get_json(force=True)
         if jsonRequest["url"] and re.match(regex, jsonRequest["url"]) is not None:
             url = jsonRequest["url"]
             url = url.lower()
