@@ -13,4 +13,5 @@ six
 validators
 Werkzeug
 zipp
+gunicorn
 
