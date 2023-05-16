@@ -1,17 +1,3 @@
-blinker
-click
-dnspython
-Flask
-Flask-Cors
-importlib-metadata
-itsdangerous
-Jinja2
-MarkupSafe
-pymongo
-six
-Werkzeug
-zipp
-gunicorn
 blinker==1.6.2
 click==8.1.3
 decorator==5.1.1
