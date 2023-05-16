@@ -12,9 +12,6 @@ regex = re.compile(
         r'\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})' # ...or ip
         r'(?::\d+)?' # optional port
         r'(?:/?|[/?]\S+)$', re.IGNORECASE)
-
-print(re.match(regex, "http://www.example.com") is not None) # True
-print(re.match(regex, "example.com") is not None) 
 client = pymongo.MongoClient(
     MONGO_URI,
     connect=False,
@@ -48,7 +45,6 @@ def geturl(hash):
                 return redirect("/invalid_url/"+hash, code=302)
     except Exception as e:
         return {"response": {"error": str(e)}}
-
 
 # write a function to generate a random alphanumeric string of length 6 using python3
 
