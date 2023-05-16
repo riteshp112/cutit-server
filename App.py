@@ -4,6 +4,7 @@ import pymongo
 from config import MONGO_DATABASE, MONGO_URI
 import random
 import string
+import validators
 client = pymongo.MongoClient(
     MONGO_URI,
     connect=False,
@@ -47,23 +48,24 @@ def hash_generator():
 
 @app.route("/", methods=["POST"])
 def get_hash():
-    jsonRequest =request.get_json(force=True)
-    if jsonRequest["url"] and jsonRequest["url"] != "":
-        url = jsonRequest["url"]
-        url = url.lower()
-        urlres = db.urls.find_one({"url": url})
-        if urlres:
-            hash = urlres["hash"]
+    try:
+        jsonRequest =request.get_json(force=True)
+        if jsonRequest["url"] and validators.url(jsonRequest["url"]):
+            url = jsonRequest["url"]
+            url = url.lower()
+            urlres = db.urls.find_one({"url": url})
+            if urlres:
+                hash = urlres["hash"]
+            else:
+                hash = hash_generator()
+                db.urls.insert_one({"url": url, "hash": hash})
+            return {
+                'short_url': uiEndPoint+hash
+            }
         else:
-            hash = hash_generator()
-            db.urls.insert_one({"url": url, "hash": hash})
-        return {
-            'short_url': uiEndPoint+hash
-        }
-    else:
-        return "Invalid url", 400
-    # except Exception as e:
-    #     return {"response": {"error": str(e)}}
+            return "Invalid url", 400
+    except Exception as e:
+        return {"response": {"error": str(e)}}
 
 
 if __name__ == "__main__":
